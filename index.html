@@ -1,0 +1,27 @@
+<!DOCTYPE html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>vuetest</title><link rel=stylesheet href=https://cdn.bootcss.com/material-design-icons/3.0.1/iconfont/material-icons.css><link href=/static/css/app.c2fc14bdfb33802a6d079fd9e02b5bfc.css rel=stylesheet></head><body><div id=app></div><script type=text/javascript src=/static/js/manifest.2ae2e69a05c33dfc65f8.js></script><script type=text/javascript src=/static/js/vendor.c7f4a09ad80e7837e3c5.js></script><script type=text/javascript src=/static/js/app.8ad2585fe32770bdb744.js></script></body><script src=script/api.js></script><div id=app></div><script>//这里处理物理返回键，避免打包后点击一次直接退出应用
+  window.apiready = function () {
+    var timer = 0
+    api.addEventListener({
+      name: 'keyback'
+    }, function (ret, err) {
+      var currentTime = +new Date()
+      api.historyBack(function (ret, err) {
+        if (!ret.status) {
+          if ((currentTime - timer) > 2000) {
+            timer = currentTime
+            api.toast({
+              msg: '再按一次返回键退出app',
+              duration: 2000,
+              location: 'bottom'
+            })
+          } else {
+            api.closeWidget({
+              id: 'A6089289836112', //这里改成自己的应用ID
+              retData: {name: 'closeWidget'},
+              silent: true
+            })
+          }
+        }
+      })
+    })
+  }</script></html>
